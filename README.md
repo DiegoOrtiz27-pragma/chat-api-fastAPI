@@ -91,7 +91,7 @@ Sigue estos pasos para configurar y ejecutar el proyecto en tu entorno local.
     Bash
     
     ```
-    git clone <URL_DE_TU_REPOSITORIO_GIT>
+    git clone https://github.com/DiegoOrtiz27-pragma/chat-api-fastAPI.git
     cd chat-api
     ```
     
