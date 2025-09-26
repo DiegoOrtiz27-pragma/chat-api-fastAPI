@@ -43,7 +43,8 @@ Este es el pilar del diseño. Separa la lógica de negocio pura de los detalles 
         
     - **Adaptadores de Salida**: Implementan la comunicación con servicios externos, como la clase `SQLiteMessageRepository` que traduce los objetos de dominio a un formato que la base de datos entiende.
         
- ![Diagrama de Arquitectura Hexagonal](https://github.com/DiegoOrtiz27-pragma/chat-api-fastAPI/blob/main/img/arquitectura_hexagonal.png)
+    ![Diagrama de Arquitectura Hexagonal](https://github.com/DiegoOrtiz27-pragma/chat-api-fastAPI/blob/main/img/arquitectura_hexagonal.png)
+    
 ### Patrones de Diseño Utilizados
 
 - **Inyección de Dependencias (Dependency Injection)**: En lugar de que los componentes creen sus propias dependencias, estas se les "inyectan" desde fuera (ver `dependencies.py`). Esto desacopla el código y facilita enormemente las pruebas, permitiéndonos reemplazar dependencias reales (como un repositorio de base de datos) por "mocks" o simuladores.
