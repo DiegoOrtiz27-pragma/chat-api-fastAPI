@@ -43,7 +43,7 @@ Este es el pilar del diseño. Separa la lógica de negocio pura de los detalles 
         
     - **Adaptadores de Salida**: Implementan la comunicación con servicios externos, como la clase `SQLiteMessageRepository` que traduce los objetos de dominio a un formato que la base de datos entiende.
         
-![Diagrama de Arquitectura Hexagonal](img\arquitectura_hexagonal.png)
+![Diagrama de Arquitectura Hexagonal](https://github.com/DiegoOrtiz27-pragma/chat-api-fastAPI/blob/main/img/arquitectura_hexagonal.png)
 
 ### Patrones de Diseño Utilizados
 
