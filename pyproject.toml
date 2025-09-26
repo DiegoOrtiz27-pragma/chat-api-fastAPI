@@ -1,0 +1,10 @@
+[tool.pytest.ini_options]
+pythonpath = "."
+addopts = "--cov=src --cov-report=term-missing --cov-report=html"
+
+[tool.coverage.run]
+omit = [
+    "src/domain/ports/*",
+    "src/infrastructure/config/*",
+    "src/infrastructure/main.py",
+]

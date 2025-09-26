@@ -43,8 +43,7 @@ Este es el pilar del diseño. Separa la lógica de negocio pura de los detalles 
         
     - **Adaptadores de Salida**: Implementan la comunicación con servicios externos, como la clase `SQLiteMessageRepository` que traduce los objetos de dominio a un formato que la base de datos entiende.
         
-  ![Diagrama de Arquitectura Hexagonal](https://github.com/DiegoOrtiz27-pragma/chat-api-fastAPI/blob/main/img/arquitectura_hexagonal.png)
-
+ ![Diagrama de Arquitectura Hexagonal](https://github.com/DiegoOrtiz27-pragma/chat-api-fastAPI/blob/main/img/arquitectura_hexagonal.png)
 ### Patrones de Diseño Utilizados
 
 - **Inyección de Dependencias (Dependency Injection)**: En lugar de que los componentes creen sus propias dependencias, estas se les "inyectan" desde fuera (ver `dependencies.py`). Esto desacopla el código y facilita enormemente las pruebas, permitiéndonos reemplazar dependencias reales (como un repositorio de base de datos) por "mocks" o simuladores.
@@ -53,6 +52,49 @@ Este es el pilar del diseño. Separa la lógica de negocio pura de los detalles 
     
 - **Repositorio (Repository Pattern)**: Abstrae la lógica de acceso a datos. El `MessageService` no sabe si los datos se guardan en SQLite, PostgreSQL o un archivo de texto; solo habla con la interfaz `IMessageRepository`, cumpliendo el contrato.
     
+
+---
+
+## 📂 Estructura del Proyecto
+
+El proyecto está organizado siguiendo la Arquitectura Hexagonal para una clara separación de responsabilidades.
+
+```
+chat-api/
+├── src/
+│   ├── application/
+│   │   └── services/
+│   │       └── message_service.py      # Orquesta los casos de uso
+│   ├── domain/
+│   │   ├── models/
+│   │   │   └── message.py              # Entidad de negocio pura
+│   │   └── ports/
+│   │       └── message_repository.py   # Interfaz (puerto) del repositorio
+│   └── infrastructure/
+│       ├── adapters/
+│       │   ├── entrypoints/
+│       │   │   └── api/                  # Adaptadores de entrada (API)
+│       │   │       ├── dependencies.py
+│       │   │       ├── error_handlers.py
+│       │   │       ├── message_routes.py
+│       │   │       ├── schemas.py
+│       │   │       └── websocket_manager.py
+│       │   └── repositories/             # Adaptadores de salida (BD)
+│       │       ├── models/
+│       │       │   └── message_orm.py
+│       │       └── sqlite_message_repository.py
+│       ├── config/
+│       │   ├── database.py
+│       │   └── rate_limiter.py
+│       └── main.py                     # Punto de entrada y ensamblaje de la app
+├── tests/                                # Pruebas unitarias y de integración
+├── .dockerignore
+├── .gitignore
+├── docker-compose.yml
+├── Dockerfile
+├── pyproject.toml
+└── requirements.txt
+```
 
 ---
 
@@ -83,8 +125,10 @@ Sigue estos pasos para configurar y ejecutar el proyecto en tu entorno local.
     
 - Tener instalado Git.
     
+- Tener instalado Docker y Docker Compose (para el despliegue en contenedor).
+    
 
-### **Instalación**
+### **Instalación Local**
 
 1. **Clona el repositorio**:
     
@@ -123,9 +167,9 @@ Sigue estos pasos para configurar y ejecutar el proyecto en tu entorno local.
     ```
     
 
-### **Ejecución**
+### **Ejecución Local**
 
-Una vez instaladas las dependencias, inicia el servidor de desarrollo con Uvicorn:
+Inicia el servidor de desarrollo con Uvicorn:
 
 Bash
 
@@ -134,6 +178,35 @@ uvicorn src.infrastructure.main:app --reload
 ```
 
 El servidor estará disponible en `http://127.0.0.1:8000`.
+
+---
+
+## 🐳 Despliegue con Docker
+
+La forma más sencilla y recomendada de ejecutar la aplicación es a través de Docker, ya que encapsula la aplicación y todas sus dependencias en un contenedor aislado.
+
+1. **Construye y levanta el contenedor**: Desde la raíz del proyecto, ejecuta el siguiente comando:
+    
+    Bash
+    
+    ```
+    docker-compose up --build
+    ```
+    
+    - `up`: Inicia el servicio definido en `docker-compose.yml`.
+        
+    - `--build`: Construye la imagen de Docker desde el `Dockerfile` antes de iniciarla.
+        
+2. **Accede a la API**: La aplicación estará disponible en la misma URL: `http://127.0.0.1:8000`.
+    
+3. **Para detener la aplicación**: Presiona `CTRL + C` en la terminal donde se está ejecutando y luego ejecuta:
+    
+    Bash
+    
+    ```
+    docker-compose down
+    ```
+    
 
 ---
 
@@ -150,7 +223,7 @@ La documentación de la API es generada automáticamente y es la mejor forma de 
 
 ## Endpoints
 
-Todos los endpoints requieren autenticación a través de la cabecera `X-API-Key: <tu-clave-secreta>`.
+Todos los endpoints requieren autenticación a través de la cabecera `X-API-Key: clave-secreta-12345`.
 
 ### 1. Crear un Mensaje
 
@@ -191,7 +264,7 @@ Establece una conexión para recibir notificaciones de nuevos mensajes.
     
 - **URL**: `/api/messages/ws`
     
-- **Autenticación**: A través de un query param: `ws://127.0.0.1:8000/api/messages/ws?X-API-Key=<tu-clave-secreta>`
+- **Autenticación**: A través de un query param: `ws://127.0.0.1:8000/api/messages/ws?X-API-Key=clave-secreta-12345`
     
 
 ---

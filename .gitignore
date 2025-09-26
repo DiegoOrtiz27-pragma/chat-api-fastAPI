@@ -1,0 +1,22 @@
+# Entorno Virtual
+venv/
+
+# Base de datos local
+chat.db
+
+# Reportes y caché de Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Archivos de configuración del editor de código
+.vscode/
+
+# Archivos compilados y caché de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Archivos de entorno
+.env

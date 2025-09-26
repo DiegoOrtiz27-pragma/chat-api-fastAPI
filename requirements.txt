@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+pydantic
+pytest
+pytest-cov
+pytest-mock
+pytest-asyncio
+httpx
+slowapi
